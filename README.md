@@ -1,6 +1,6 @@
-# app-mscontas
+# template-webapp-vue-auth-firebase
 
-Set api-mscontas dependency URL in .env.[MODE] files: [development, staging, production, etc...]
+Set App ENV dependency URL in .env.[MODE] files: [development, staging, production, etc...]
 
 ## Project setup
 
