@@ -33,7 +33,7 @@ const handlerNotification = async function (payload) {
   // Customize notification here
   if (payload.data){
     var icon = payload.data.icon ? `${contextImages}${payload.data.icon}` : `${contextImages}${defaultIcon}`;
-    var notificationTitle = '!!!'+(payload.data.title ? payload.data.title : 'Nova Mensagem!!');
+    var notificationTitle = (payload.data.title ? payload.data.title : 'Nova Mensagem!');
     var notificationOptions = {
       body: payload.data.body,
       icon: icon

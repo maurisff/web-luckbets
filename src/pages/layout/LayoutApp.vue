@@ -3,40 +3,40 @@
     <v-navigation-drawer v-if="!isAcessoOuErro"
       v-model="drawer" app >
       <v-list dense>
-        <v-list-item
-          value="true"
-          v-for="(item, i) in menu"
-          :key="i"
-          :to="{path:item.link}" >
-          <v-list-item-action>
-            <v-icon v-if="item.ico" v-html="item.ico"></v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.titulo"></v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-      <v-list dense>
-        <v-list-group
-          :value="menu.active"
-          v-for="(menu, m) in menuLista"
-          :key="'group.'+m"
-          :prepend-icon="menu.ico"
-          no-action >
-          <template v-slot:activator>
-            <v-list-item-content>
-              <v-list-item-title>{{ menu.titulo }}</v-list-item-title>
-            </v-list-item-content>
-          </template>
-          <v-list-item v-for="(item, y) in menu.itens" :key="'item.'+y" :to="{path:item.link}" >
-            <v-list-item-content>
-              <v-list-item-title>{{ item.titulo }}</v-list-item-title>
-            </v-list-item-content>
+        <div v-for="(item, i) in menuItens" :key="i">
+          <v-list-group
+            v-if="(item.subItens && item.subItens.length > 0)"
+            :value="activeMenu(item)"
+            :key="`menu-${i}`"
+            :prepend-icon="item.icon"
+            no-action >
+            <template v-slot:activator>
+              <v-list-item-content>
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item-content>
+            </template>
+            <v-list-item v-for="(subItem, y) in item.subItens" :key="`menu-${i}-subItem-${y}`" :to="{ path: subItem.link}" >
+              <v-list-item-action>
+                <v-icon v-if="subItem.icon" v-html="subItem.icon"></v-icon>
+              </v-list-item-action>
+              <v-list-item-content>
+                <v-list-item-title>{{ subItem.title }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-group>          
+          <v-list-item
+            v-else
+            :key="`menu-${i}`"
+            :value="activeMenu(item)"
+            :to="{path: item.link}" >
             <v-list-item-action>
-              <v-icon>{{ item.ico }}</v-icon>
+              <v-icon v-if="item.icon" v-html="item.icon"></v-icon>
             </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title v-text="item.title"></v-list-item-title>
+            </v-list-item-content>
           </v-list-item>
-        </v-list-group>
+        </div>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar v-if="!isAcessoOuErro" app dark >
@@ -61,10 +61,18 @@
             <v-list>
               <v-list-item @click.stop="senha">
                 <v-list-item-avatar>
-                  <v-icon >account_box</v-icon>
+                  <v-icon >mdi-key-change</v-icon>
                 </v-list-item-avatar>
                 <v-list-item-content>
                   <v-list-item-title>Alterar Senha</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item @click.stop="darkMode = !darkMode">
+                <v-list-item-avatar>
+                  <v-icon >mdi-theme-light-dark</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title>{{ (darkMode ? 'Modo Claro' : 'Modo Escuro') }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
               <v-list-item @click.stop="logout">
@@ -95,30 +103,22 @@
 </template>
 
 <script>
-  // import app from '@/services/app'
   export default {
     name: 'LayoutApp',
     data () {
       return {
-        clipped: true,
         drawer: false,
         fixed: false,
         menuProfile: true,
         miniVariant: false,
         right: true,
         rightDrawer: false,
-        menuGrupo: [],
-        menuAcesso: [{
-            ico: 'home',
-            titulo: 'Home',
-            link: '/'
-          }],
-        entidadeSelected: null
+        entidadeSelected: null,
+        darkMode: this.$vuetify.theme.dark
       }
     },
     methods:{
-      async logout (){      
-        // await this.$store.dispatch('authentication/logout', null, { root: true });
+      async logout (){
         this.$router.push({ path: '/acesso/logout' }).catch(() => { });
       },
       senha (){      
@@ -128,7 +128,14 @@
       },
       retornaPrimeiroNome(displayName){
         return displayName.substring(0, (displayName.indexOf(" ")>-1 ? displayName.indexOf(" ") : displayName.length ));
-      }
+      },
+      activeMenu: function(menu){
+        if (!menu.subItens){
+          return (menu.link && menu.link === this.$route.path)
+        } else {
+          return !!menu.subItens.find(f => f.link && f.link === this.$route.path)
+        }
+      },
     },
     computed: {
       appTitle (){
@@ -158,80 +165,154 @@
       auth: function(){
         return this.$store.getters['authentication/user'];
       },
-      rotas: function(){
-        return this.$router.options.routes.filter(function(el){
-            return ((el.meta && el.meta.isMenu || false) ? true : false);
-          })
+      menuAccess : function(){
+        const vm = this;
+        return vm.$router.options.routes.filter(e => e.meta && !!e.meta.isMenu)
+          .map(e => ({
+            path: e.path,
+            order: e.meta.order || 0,
+            title: e.meta.title,
+            icon:  e.meta.icon,
+            isAdmin: !!e.meta.isAdmin,
+            isPublic: !!e.meta.isPublic,
+            groupOrder: e.meta.groupOrder || 0,
+            groupTitle: e.meta.groupTitle,
+            groupIcon:  e.meta.groupIcon,
+          }))
+          .filter(e => (e.isPublic || vm.auth))
+          .filter(e => (!e.isAdmin || (vm.auth && vm.auth.admin)))
       },
-      menu: function () {
-        var vm = this
-        return vm.rotas.filter(function(rota){
-          return (rota.meta.MenuTitle ? false : true);
-        }).filter(function(rota){
-          return (rota.meta.pagePublic || 
-                  (vm.auth && vm.auth.admin) || 
-                  (vm.auth && !rota.meta.requiresAdmin) ||
-                  (rota.meta.requiresAdmin && vm.auth && vm.auth.admin) );
-        }).map(function(rota) {
-          return {
-            titulo: (rota.meta.title || 'Sem Nome'),
-            link: rota.path,
-            ico: (rota.meta.ico || undefined)
-          }
-        });
-      },
-      menuLista: function () {
-        var vm = this
-        vm.menuGrupo = []
-        vm.rotas.filter(function(rota){
-          return (rota.meta.MenuTitle ? true : false) ;
-        }).filter(function(rota){
-          return (rota.meta.pagePublic || 
-                  (vm.auth && vm.auth.admin) || 
-                  (vm.auth && !rota.meta.requiresAdmin) ||
-                  (rota.meta.requiresAdmin && vm.auth && vm.auth.admin) );
-        }).forEach(element => {
-          if (vm.menuGrupo.map(function (e) {return e.titulo;}).indexOf(element.meta.MenuTitle) > -1){
-            for (let i = 0; i < vm.menuGrupo.length; i++) {
-              if ( vm.menuGrupo[i].titulo === element.meta.MenuTitle){
-                vm.menuGrupo[i].itens.push({
-                  titulo: (element.meta.title || 'Sem Nome'),
-                  link: element.path,
-                  ico: (element.meta.ico || undefined)
-                })
+      menuItens: function(){     
+        if (this.menuAccess && this.menuAccess.length === 1){
+          if (this.menuAccess[0].groupTitle){
+                return [
+                  {
+                    order: this.menuAccess[0].groupOrder,
+                    title: this.menuAccess[0].groupTitle,
+                    icon: this.menuAccess[0].groupIcon,
+                    isAdmin: this.menuAccess[0].isAdmin,
+                    isPublic: this.menuAccess[0].isPublic,
+                    subItens: [{
+                        order: this.menuAccess[0].order,
+                        title: this.menuAccess[0].title,
+                        icon: this.menuAccess[0].icon,
+                        link: this.menuAccess[0].path,
+                        isAdmin: this.menuAccess[0].isAdmin,
+                        isPublic: this.menuAccess[0].isPublic,                    
+                      }
+                    ]                   
+                  }
+                ]
+              } else {
+                return [
+                  {
+                    order: this.menuAccess[0].order,
+                    title: this.menuAccess[0].title,
+                    icon: this.menuAccess[0].icon,
+                    link: this.menuAccess[0].path,
+                    isAdmin: this.menuAccess[0].isAdmin,
+                    isPublic: this.menuAccess[0].isPublic,                    
+                  }
+                ]
+              }
+        } else if (this.menuAccess && this.menuAccess.length > 1){
+          return this.menuAccess.reduce((accumulator, currentValue) => {
+            if (!Array.isArray(accumulator)){
+              if (accumulator.groupTitle){
+                accumulator = [
+                  {
+                    order: accumulator.groupOrder,
+                    title: accumulator.groupTitle,
+                    icon: accumulator.groupIcon,
+                    isAdmin: accumulator.isAdmin,
+                    isPublic: accumulator.isPublic,
+                    subItens: [{
+                        order: accumulator.order,
+                        title: accumulator.title,
+                        icon: accumulator.icon,
+                        link: accumulator.path,
+                        isAdmin: accumulator.isAdmin,
+                        isPublic: accumulator.isPublic,                    
+                      }
+                    ]                   
+                  }
+                ]
+              } else {
+                accumulator = [
+                  {
+                    order: accumulator.order,
+                    title: accumulator.title,
+                    icon: accumulator.icon,
+                    link: accumulator.path,
+                    isAdmin: accumulator.isAdmin,
+                    isPublic: accumulator.isPublic,                    
+                  }
+                ]
               }
             }
-          }else{
-            vm.menuGrupo.push({
-              titulo: (element.meta.MenuTitle || 'Sem Nome'),
-              ico: (element.meta.MenuIco || undefined),
-              itens: [{
-                  titulo: (element.meta.title || 'Sem Nome'),
-                  link: element.path,
-                  ico: (element.meta.ico || undefined)
-                }]
-            })
-          }
-        });
-        return vm.menuGrupo
+
+            if (currentValue.groupTitle){
+              const idxAcc = accumulator.map(a => a.title).indexOf(currentValue.groupTitle)
+              if (idxAcc > -1){
+                if (!(accumulator[idxAcc].isAdmin)){
+                  accumulator[idxAcc].isAdmin = currentValue.isAdmin;
+                }
+                if (!(accumulator[idxAcc].isPublic)){
+                  accumulator[idxAcc].isPublic = currentValue.isPublic;
+                }
+                accumulator[idxAcc].subItens.push({
+                  order: currentValue.order,
+                  title: currentValue.title,
+                  icon: currentValue.icon,
+                  link: currentValue.path,
+                  isAdmin: currentValue.isAdmin,
+                  isPublic: currentValue.isPublic,                    
+                })
+              } else {
+                accumulator.push({
+                    order: currentValue.groupOrder,
+                    title: currentValue.groupTitle,
+                    icon: currentValue.groupIcon,
+                    isAdmin: currentValue.isAdmin,
+                    isPublic: currentValue.isPublic,
+                    subItens: [{
+                        order: currentValue.order,
+                        title: currentValue.title,
+                        icon: currentValue.icon,
+                        link: currentValue.path,
+                        isAdmin: currentValue.isAdmin,
+                        isPublic: currentValue.isPublic,                    
+                      }
+                    ]                   
+                  })
+              }
+            } else {
+              accumulator.push({
+                order: currentValue.order,
+                title: currentValue.title,
+                icon: currentValue.icon,
+                link: currentValue.path,
+                isAdmin: currentValue.isAdmin,
+                isPublic: currentValue.isPublic,                    
+              })
+            }
+            return accumulator
+          })
+        } else {
+          return []
+        }
       }
     },
     mounted(){
     },
-    created(){
+    async created(){
       this.initAcessos();
     },
     watch:{
-      $route () {
-          /*
-          let parent = _findMatchingParentMenuItem.call(this, route.name) || {}
-          this.menuItems.forEach((item) => {
-            this.expand({
-              menuItem: item,
-              expand: parent.name === item.name
-            })
-          })
-          */
+      darkMode(mode) {
+        //theme.dark
+        this.$vuetify.theme.dark = mode
+        localStorage.setItem('appCurrentDarkMode', this.$vuetify.theme.dark)
       }
     }
   }

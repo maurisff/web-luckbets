@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "your-firebase-project",
-    "dev": "dev-your-firebase-project"
+    "default": "luckybets",
+    "dev": "dev-luckybets"
   }
 }

@@ -1,6 +1,7 @@
 <template>
 <v-container>
-  <div>Ola mundo</div><!--
+  <div>Bem Vindo!!</div>
+  <div>Router: {{ $route.path }}</div><!--
   <v-card v-if="(auth && auth.admin)">
   <div>
     <inputPessoa v-model="pessoa" ></inputPessoa> 
@@ -23,11 +24,14 @@ export default {
   },
   data(){
     return {
-      pessoa: null
+      pessoa: null,
+      currentRouter: null,
     }
   },
   watch:{
-    
+    $route () {
+        this.currentRouter = this.$route.path
+      }
   },
   methods:{
     getFullPach: function () {
@@ -37,6 +41,7 @@ export default {
   mounted(){
   },
   created() {
+    this.currentRouter = this.$route.path
   },
   computed: {
     auth(){

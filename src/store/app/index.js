@@ -32,9 +32,8 @@ export default {
     }
   },
   actions: {
-    async initialize ({dispatch}, payload) {      
+    async initialize ({dispatch}) {      
       await dispatch('authentication/onAuth', null, { root: true });
-      console.log('Pages: ', payload)
       /*
       if (process.env.NODE_ENV !== 'development' && payload && Array.isArray(payload)){
         app.post('api/public/checkUpdateAll', payload).then((response) => {

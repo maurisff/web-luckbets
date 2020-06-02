@@ -6,7 +6,7 @@ import configRouter from '@/router/router.config'
 Vue.use(Router)
 
 var INSTANCE_ROUTER = new Router({
-  //mode: 'history', //com isso no FirebaseHosting se perde na hora de carregar a pagina pela URL
+  mode: 'history', //com isso no FirebaseHosting se perde na hora de carregar a pagina pela URL
   routes: [{
       path: '*',
       redirect: '/erro/404'
@@ -19,6 +19,8 @@ var INSTANCE_ROUTER = new Router({
 
 
 INSTANCE_ROUTER.beforeEach(async (to, from, next) => {
+  // console.log('INSTANCE_ROUTER.FROM: ', from);
+  // console.log('INSTANCE_ROUTER.To: ', to);
   if (store.getters['authentication/user'] && !store.getters['authentication/user']._id && !to.fullPath.includes('/acesso/finalizar')){    
     next({
       path: '/acesso/finalizar',
@@ -29,7 +31,7 @@ INSTANCE_ROUTER.beforeEach(async (to, from, next) => {
       path: '/',
       query: { redirect: to.fullPath }
     });
-  } else if (!to.matched.some(record => record.meta.pagePublic)){    
+  } else if (!to.matched.some(record => record.meta.isPublic)){    
     if (!store.getters['authentication/user']) {      
       next({
         path: '/acesso/entrar',
@@ -40,7 +42,7 @@ INSTANCE_ROUTER.beforeEach(async (to, from, next) => {
       next({
         path: '/erro/ops'
       });
-    } else if(to.matched.some(record => record.meta.requiresAdmin) && !store.getters['authentication/user'].admin ){ 
+    } else if(to.matched.some(record => record.meta.isAdmin) && !store.getters['authentication/user'].admin ){ 
       store.dispatch('app/setErro', 'Acesso restrito a administração do Sistema!', { root: true });
       next({
         path: '/erro/ops'
