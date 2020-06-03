@@ -96,7 +96,7 @@
       groupIcon: 'mdi-tools',
       isAdmin: true
     },
-    component: lazyLoading('layout/Home')
+    component: lazyLoading('administracao/Modalidade')
   }, {
     path: '/administracao/usuarios',
     meta: {
