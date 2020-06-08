@@ -1,31 +1,24 @@
 <template>
-<v-container>
-  <div>Bem Vindo!!</div>
-  <div>Router: {{ $route.path }}</div><!--
-  <v-card v-if="(auth && auth.admin)">
-  <div>
-    <inputPessoa v-model="pessoa" ></inputPessoa> 
-    <pre>
-      Usuario: {{ (auth && auth.admin ? auth : 'Pagina inicial' )}}
-    </pre>
-  </div>
-  </v-card> -->
-</v-container>
-  <!-- <v-parallax src="/static/img/maxpig_fundo.png">
-  </v-parallax> -->
+  <v-container>
+    <ultimoSorteio v-model="sorteios"/>
+  </v-container>
 </template>
 <script>
   
 // import inputPessoa from '@/components/cadastro/Pessoa/inputPessoa'
+
+import app from '@/services/app'
+import ultimoSorteio from '@/components/modalidade/sorteio/ultimo-sorteio'
 export default {
   name: 'Home',
   components: {
-    // inputPessoa,
+    ultimoSorteio,
   },
   data(){
     return {
       pessoa: null,
       currentRouter: null,
+      sorteios: []
     }
   },
   watch:{
@@ -34,13 +27,32 @@ export default {
       }
   },
   methods:{
+    async fetchData (){
+      var vm = this;        
+      vm.$store.dispatch('app/setLoading', true, { root: true })
+      try {
+        this.sorteios = [];
+        const response = await app.get('api/sorteios/ultimosresultados');        
+        if (response.status === 200 && response.data && response.data.success){
+          const { data = [] } = response.data
+          this.sorteios = data
+        }
+      } catch (error) {
+        console.error('Error get ultimosresultados: ', error)        
+      }  
+      vm.$store.dispatch('app/setLoading', false, { root: true });      
+    },
     getFullPach: function () {
       return (this.$route.path)
     }
   },
-  mounted(){
+  async mounted(){
+    
+    await this.fetchData();
+    console.log('HOME: ', this.sorteios)
   },
-  created() {
+  async created() {
+
     this.currentRouter = this.$route.path
   },
   computed: {
