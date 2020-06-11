@@ -43,11 +43,39 @@
                         data-vv-name="model.titulo" :error-messages="errors.collect('model.titulo')" data-vv-scope="model" ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="12" md="12">
-                      <v-text-field v-model="model.url" label="URL" v-validate="'required'"
+                      <v-text-field rows="2" v-model="model.url" label="URL" v-validate="'required'"
                         data-vv-name="model.url" :error-messages="errors.collect('model.url')" data-vv-scope="model" ></v-text-field>
                     </v-col>
                   </v-row>
                 </v-container>
+                <v-card>
+                  <v-card-title>
+                    <span class="headline">Sorteios</span>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-row>
+                      <v-col cols="12" sm="1" md="1">
+                        <v-text-field v-model="model.ultimoConcurso" label="Concurso" type="number" v-validate="'required'"
+                          data-vv-name="model.Concurso" :error-messages="errors.collect('model.Concurso')" data-vv-scope="model" ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="3" md="3" lg="3">
+                        <v-text-field v-model="model.ultimaApuracao" label="Apuração" v-validate="'required'"
+                          data-vv-name="model.ultimaApuracao" :error-messages="errors.collect('model.ultimaApuracao')" data-vv-scope="model" ></v-text-field>
+                      </v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col cols="12" sm="1" md="1">
+                        <v-text-field v-model="model.proximoConcurso" type="number" label="Próximo" v-validate="'required'"
+                          data-vv-name="model.proximoConcurso" :error-messages="errors.collect('model.proximoConcurso')" data-vv-scope="model" ></v-text-field>
+                      </v-col>
+                      <v-col cols="12" sm="3" md="3">
+                        <v-text-field  rows="2" v-model="model.proximaApuracao" label="Próxima Apuração" v-validate="'required'"
+                          data-vv-name="model.proximaApuracao" :error-messages="errors.collect('model.proximaApuracao')" data-vv-scope="model" ></v-text-field>
+                      </v-col>
+                    </v-row>
+                  </v-card-text>
+
+                </v-card>
               </v-card-text>
               <v-card-actions>
                 <div class="flex-grow-1"></div>
@@ -149,6 +177,7 @@ export default {
         if (response.status === 200 && response.data && response.data.success){
           const { data = [] } = response.data
           vm.data = data
+          console.log('vm.data: ', vm.data);
         }
       }).catch(error => {
         console.error('Error get pessoa: ', error)

@@ -1,16 +1,14 @@
 {
-  "name": "template-webapp-vue-auth-firebase",
+  "name": "web-luckbets",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "dev": "vue-cli-service serve",
-    "devHeroku": "vue-cli-service serve --mode herokudev",
     "build": "vue-cli-service build",
     "deploy": "firebase login && firebase use default && vue-cli-service build && firebase deploy --project default",
-    "buildDemo": "vue-cli-service build --mode staging",
-    "deployDemo": "firebase login && firebase use demo && vue-cli-service build --mode staging && firebase deploy --project demo && firebase use default",
+    "devHeroku": "vue-cli-service serve --mode herokudev",
     "buildDev": "vue-cli-service build --mode herokudev",
-    "deployDev": "firebase login && firebase use dev-mscontas && vue-cli-service build --mode herokudev && firebase deploy --project dev-mscontas && firebase use default",
+    "deployDev": "firebase login && firebase use develop && vue-cli-service build --mode herokudev && firebase deploy --only hosting --project develop && firebase use default",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

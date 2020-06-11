@@ -17,7 +17,7 @@
             </template>
             <v-list-item v-for="(subItem, y) in item.subItens" :key="`menu-${i}-subItem-${y}`" :to="{ path: subItem.link}" >
               <v-list-item-action>
-                <v-icon v-if="subItem.icon" v-html="subItem.icon"></v-icon>
+                <v-icon v-if="subItem.icon" v-html="subItem.icon" v-bind:color="subItem.colorIcon"></v-icon>
               </v-list-item-action>
               <v-list-item-content>
                 <v-list-item-title>{{ subItem.title }}</v-list-item-title>
@@ -30,7 +30,7 @@
             :value="activeMenu(item)"
             :to="{path: item.link}" >
             <v-list-item-action>
-              <v-icon v-if="item.icon" v-html="item.icon"></v-icon>
+              <v-icon v-if="item.icon" v-html="item.icon" color="subItem.colorIcon"></v-icon>
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title v-text="item.title"></v-list-item-title>
@@ -173,11 +173,13 @@
             order: e.meta.order || 0,
             title: e.meta.title,
             icon:  e.meta.icon,
+            colorIcon:  e.meta.colorIcon,
             isAdmin: !!e.meta.isAdmin,
             isPublic: !!e.meta.isPublic,
             groupOrder: e.meta.groupOrder || 0,
             groupTitle: e.meta.groupTitle,
             groupIcon:  e.meta.groupIcon,
+            groupColorIcon:  e.meta.groupColorIcon,
           }))
           .filter(e => (e.isPublic || vm.auth))
           .filter(e => (!e.isAdmin || (vm.auth && vm.auth.admin)))
@@ -190,12 +192,14 @@
                     order: this.menuAccess[0].groupOrder,
                     title: this.menuAccess[0].groupTitle,
                     icon: this.menuAccess[0].groupIcon,
+                    colorIcon: this.menuAccess[0].groupColorIcon,
                     isAdmin: this.menuAccess[0].isAdmin,
                     isPublic: this.menuAccess[0].isPublic,
                     subItens: [{
                         order: this.menuAccess[0].order,
                         title: this.menuAccess[0].title,
                         icon: this.menuAccess[0].icon,
+                        colorIcon: this.menuAccess[0].colorIcon,
                         link: this.menuAccess[0].path,
                         isAdmin: this.menuAccess[0].isAdmin,
                         isPublic: this.menuAccess[0].isPublic,                    
@@ -209,6 +213,7 @@
                     order: this.menuAccess[0].order,
                     title: this.menuAccess[0].title,
                     icon: this.menuAccess[0].icon,
+                    colorIcon: this.menuAccess[0].colorIcon,
                     link: this.menuAccess[0].path,
                     isAdmin: this.menuAccess[0].isAdmin,
                     isPublic: this.menuAccess[0].isPublic,                    
@@ -224,12 +229,14 @@
                     order: accumulator.groupOrder,
                     title: accumulator.groupTitle,
                     icon: accumulator.groupIcon,
+                    colorIcon: accumulator.groupColorIcon,
                     isAdmin: accumulator.isAdmin,
                     isPublic: accumulator.isPublic,
                     subItens: [{
                         order: accumulator.order,
                         title: accumulator.title,
                         icon: accumulator.icon,
+                        colorIcon: accumulator.colorIcon,
                         link: accumulator.path,
                         isAdmin: accumulator.isAdmin,
                         isPublic: accumulator.isPublic,                    
@@ -243,6 +250,7 @@
                     order: accumulator.order,
                     title: accumulator.title,
                     icon: accumulator.icon,
+                    colorIcon: accumulator.colorIcon,
                     link: accumulator.path,
                     isAdmin: accumulator.isAdmin,
                     isPublic: accumulator.isPublic,                    
@@ -264,6 +272,7 @@
                   order: currentValue.order,
                   title: currentValue.title,
                   icon: currentValue.icon,
+                  colorIcon: currentValue.colorIcon,
                   link: currentValue.path,
                   isAdmin: currentValue.isAdmin,
                   isPublic: currentValue.isPublic,                    
@@ -273,12 +282,14 @@
                     order: currentValue.groupOrder,
                     title: currentValue.groupTitle,
                     icon: currentValue.groupIcon,
+                    colorIcon: currentValue.groupColorIcon,
                     isAdmin: currentValue.isAdmin,
                     isPublic: currentValue.isPublic,
                     subItens: [{
                         order: currentValue.order,
                         title: currentValue.title,
                         icon: currentValue.icon,
+                        colorIcon: currentValue.colorIcon,
                         link: currentValue.path,
                         isAdmin: currentValue.isAdmin,
                         isPublic: currentValue.isPublic,                    
@@ -291,6 +302,7 @@
                 order: currentValue.order,
                 title: currentValue.title,
                 icon: currentValue.icon,
+                colorIcon: currentValue.colorIcon,
                 link: currentValue.path,
                 isAdmin: currentValue.isAdmin,
                 isPublic: currentValue.isPublic,                    

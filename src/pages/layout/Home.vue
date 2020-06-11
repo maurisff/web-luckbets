@@ -1,6 +1,21 @@
 <template>
   <v-container>
-    <ultimoSorteio v-model="sorteios"/>
+    <v-card v-if="!isAuth">
+      <v-card-title>
+        <span>Bem vindo ao Luck Bets!</span>
+      </v-card-title>
+      <v-card-text>
+        <p>
+          A aplicação luck bets é uma ferramenta criada pensando em apostadores que realizam apostas diariamente nas loterias da caixa, e não querem ficar de fora de nenhum sorteio do seu jogo preferido.
+          <br/>
+          Ela também faz a conferencia automatica das apostas registrada, e realiza notificação em caso de Premiação.
+          <br/>
+          <br/>
+          Cadastre-se e venha conhecer todas as funcionalidades!
+        </p>
+      </v-card-text>
+    </v-card>
+    <ultimoSorteio v-else v-model="sorteios"/>
   </v-container>
 </template>
 <script>
@@ -23,8 +38,13 @@ export default {
   },
   watch:{
     $route () {
-        this.currentRouter = this.$route.path
+      this.currentRouter = this.$route.path
+    },
+    async auth (current, old){
+      if (current && current !== old ){
+        await this.fetchData();
       }
+    }
   },
   methods:{
     async fetchData (){
@@ -46,14 +66,13 @@ export default {
       return (this.$route.path)
     }
   },
-  async mounted(){
-    
-    await this.fetchData();
-    console.log('HOME: ', this.sorteios)
+  async mounted(){    
   },
   async created() {
-
     this.currentRouter = this.$route.path
+    if (this.auth ){
+      await this.fetchData();
+    }
   },
   computed: {
     auth(){
