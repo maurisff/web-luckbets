@@ -33,7 +33,7 @@ jobs:
     name: Deploy Develop
     needs: build
     runs-on: ubuntu-latest
-    if: (ggithub.ref == 'refs/heads/develop' && success())
+    if: (github.ref == 'refs/heads/develop' && success())
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
