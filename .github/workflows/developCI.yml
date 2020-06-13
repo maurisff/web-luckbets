@@ -6,12 +6,11 @@ on:
   pull_request:
     branches:
       - develop
-
 jobs:
   build:
     name: Build Develop
     runs-on: ubuntu-latest
-    if: (github.ref == 'refs/heads/develop' && ${{ secrets.IS_DEVELOP }})
+    if: (github.ref == 'refs/heads/develop')
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
@@ -34,7 +33,7 @@ jobs:
     name: Deploy Develop
     needs: build
     runs-on: ubuntu-latest
-    if: (ggithub.ref == 'refs/heads/develop' && ${{ secrets.IS_DEVELOP }} && success())
+    if: (ggithub.ref == 'refs/heads/develop' && success())
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
