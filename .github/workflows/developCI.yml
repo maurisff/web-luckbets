@@ -31,7 +31,6 @@ jobs:
           path: dist  
   deploy:
     name: Deploy Develop
-    needs: build
     runs-on: ubuntu-latest
     if: (github.ref == 'refs/heads/develop' && success())
     steps:
