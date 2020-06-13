@@ -41,7 +41,9 @@ export default {
       this.currentRouter = this.$route.path
     },
     async auth (current, old){
+      console.log('watch.auth: ', current, old)
       if (current && current !== old ){
+      console.log('auth.fetch')
         await this.fetchData();
       }
     }
@@ -71,6 +73,7 @@ export default {
   async created() {
     this.currentRouter = this.$route.path
     if (this.auth ){
+      console.log('created.fetch')
       await this.fetchData();
     }
   },
