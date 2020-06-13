@@ -6,12 +6,13 @@ on:
   pull_request:
     branches:
       - master
-
-jobs:
+env:
+  IS_BUILD_DEPLOY: ${{ secrets.IS_PRODUCTION }} 
+jobs:     
   build:
     name: Build Production
     runs-on: ubuntu-latest
-    if: (github.ref == 'refs/heads/master' && ${{ secrets.IS_PRODUCTION }})
+    if: (github.ref == 'refs/heads/master' && ${{ env.IS_BUILD_DEPLOY }})
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
@@ -34,7 +35,7 @@ jobs:
     name: Deploy Production
     needs: build
     runs-on: ubuntu-latest
-    if: (github.ref == 'refs/heads/master' && ${{ secrets.IS_PRODUCTION }} && success())
+    if: (github.ref == 'refs/heads/master' && ${{ env.IS_BUILD_DEPLOY }} && success())
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
