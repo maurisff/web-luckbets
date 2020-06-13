@@ -6,15 +6,7 @@ on:
   pull_request:
     branches:
       - master
-env:
-  IS_BUILD_DEPLOY: ${{ secrets.IS_PRODUCTION }} 
 jobs:
-  debug:    
-    name: Debug
-    runs-on: ubuntu-latest
-    steps:
-      - name: echo
-        run: echo ${{ toJson(env)}}
   build:
     name: Build Production
     runs-on: ubuntu-latest
