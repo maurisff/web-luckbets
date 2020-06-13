@@ -46,16 +46,6 @@ npm run build
 npm run deploy
 ```
 
-### Compiles and minifies for staging - MODE: Production
-```
-npm run buildDemo
-```
-
-### Compiles, minifies and deploy for staging on Firebase Hosting - MODE: Production
-```
-npm run deployDemo
-```
-
 ### Compiles and minifies for development with API on Herokuapp - MODE: Development
 ```
 npm run buildDev
