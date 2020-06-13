@@ -11,7 +11,7 @@ jobs:
   build:
     name: Build Production
     runs-on: ubuntu-latest
-    if: (github.ref == 'refs/heads/master' && ${{ secrets.PRODUCTION_FIREBASE_JSON_CONFIG }})
+    if: (github.ref == 'refs/heads/master' && ${{ secrets.IS_PRODUCTION }})
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
@@ -34,7 +34,7 @@ jobs:
     name: Deploy Production
     needs: build
     runs-on: ubuntu-latest
-    if: (github.ref == 'refs/heads/master' && ${{ secrets.PRODUCTION_FIREBASE_JSON_CONFIG }} && success())
+    if: (github.ref == 'refs/heads/master' && ${{ secrets.IS_PRODUCTION }} && success())
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
