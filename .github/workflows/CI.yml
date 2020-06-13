@@ -18,7 +18,7 @@ jobs:
   build:
     name: Build Production
     runs-on: ubuntu-latest
-    if: (github.ref == 'refs/heads/master' && 1 == 2)
+    if: (github.ref == 'refs/heads/master' && 1 == 2 && ${{env.IS_BUILD_DEPLOY}})
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
