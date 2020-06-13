@@ -1,0 +1,51 @@
+name: CI Develop
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+    name: Build Develop
+    runs-on: ubuntu-latest
+    if: (github.ref == 'refs/heads/develop' && ${{ secrets.IS_DEVELOP }})
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@master
+      - name: Install Dependencies
+        run: npm install
+      - name: Build
+        env:
+          NODE_ENV: ${{ 'production' }}
+          VUE_APP_TITLE: ${{ 'Luck Bets(Develop)' }}
+          VUE_APP_AUTH_PROVIDER: ${{ '["PASSWORD","GOOGLE"]' }}
+          VUE_APP_ROOT_API: ${{ secrets.DEVELOP_ROOT_API }}
+          VUE_APP_FIREBASE_JSON_CONFIG: ${{ secrets.DEVELOP_FIREBASE_JSON_CONFIG }}
+        run: npm run build
+      - name: Archive Production Artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: dist
+          path: dist  
+  deploy:
+    name: Deploy Develop
+    needs: build
+    runs-on: ubuntu-latest
+    if: (ggithub.ref == 'refs/heads/develop' && ${{ secrets.IS_DEVELOP }} && success())
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@master
+      - name: Download Artifact
+        uses: actions/download-artifact@master
+        with:
+          name: dist
+          path: dist
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only hosting --project develop
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
