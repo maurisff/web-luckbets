@@ -12,7 +12,7 @@ jobs:
   build:
     name: Build Production
     runs-on: ubuntu-latest
-    if: (github.ref == 'refs/heads/master' && $IS_BUILD_DEPLOY )
+    if: (github.ref == 'refs/heads/master' && ${{IS_BUILD_DEPLOY}} )
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
@@ -35,7 +35,7 @@ jobs:
     name: Deploy Production
     needs: build
     runs-on: ubuntu-latest
-    if: (github.ref == 'refs/heads/master' && $IS_BUILD_DEPLOY && success())
+    if: (github.ref == 'refs/heads/master' && ${{IS_BUILD_DEPLOY}} && success())
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
