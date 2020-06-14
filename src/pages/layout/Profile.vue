@@ -83,9 +83,28 @@
         vm.$store.dispatch('app/setLoading', false, { root: true });
       },
       saveProfile(){
-        this.$validator.validateAll().then((success) =>{
+        this.$validator.validateAll().then(async (success) =>{
           if (success){
-            console.log(this.profile)
+            this.$store.dispatch('app/setProcessing', 'Processando...', { root: true });
+            await app.put('api/usuariologado/usuario', this.profile).then(async (response) => {
+              if (response.status === 200 && response.data && response.data.success){
+                this.$store.dispatch('app/setMessage',{
+                  type: 'success',
+                  message: 'Perfil atualizado com sucesso!',
+                  }, { root: true });
+              } else if (response.data && !response.data.success){
+                this.$store.dispatch('app/setMessage',{
+                  type: 'error',
+                  message: response.data.data,
+                  }, { root: true });
+              }
+            }).catch(error => {
+              this.$store.dispatch('app/setMessage',{
+                  type: 'error',
+                  message: error,
+                  }, { root: true });
+            });
+            this.$store.dispatch('app/setProcessing', null, { root: true });
           }
         });
       },

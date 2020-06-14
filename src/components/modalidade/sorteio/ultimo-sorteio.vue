@@ -132,7 +132,6 @@
     },
     watch:{
       value(){
-        console.log('ULTIMO: ', this.value)
         this.data = this.value ? this.value : [];
         this.data = this.data.slice().sort((a,b) => new Date(b.apuracao) - new Date(a.apuracao)  )
       }
@@ -209,7 +208,6 @@
         ]
       }]
       */
-      console.log(this.data)
     },
     computed: {
       
