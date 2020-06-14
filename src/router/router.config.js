@@ -209,8 +209,23 @@
       isAdmin: true
     },
     component: lazyLoading('layout/Home')
-  },
-  {
+  },{
+    path: '/administracao/sorteios',
+    meta: {
+      codigo: 'ADM004',
+      isMenu: true,
+      order: 4,
+      title: 'Sorteios',
+      icon: 'mdi-cog-refresh',
+      colorIcon: null,
+      groupOrder: 2,
+      groupTitle: 'Administração',
+      groupIcon: 'mdi-tools',
+      groupColorIcon: null,
+      isAdmin: true
+    },
+    component: lazyLoading('administracao/Sorteios')
+  }, {
     path: '/usuario',
     meta: {
       codigo: 'ADM999',

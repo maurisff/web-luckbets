@@ -1,4 +1,4 @@
-# template-webapp-vue-auth-firebase
+# web-luckbets
 
 Set App ENV dependency URL in .env.[MODE] files: [development, staging, production, etc...]
 
@@ -29,6 +29,11 @@ VUE_APP_FIREBASE_AUTH_PROVIDER=["PASSWORD","GOOGLE", "FACEBOOK", 'TWITTER']
 ### install dependencies
 ```
 npm install
+```
+
+### Compiles and minifies for development for localhost - MODE: Development
+```
+npm run dev
 ```
 
 ### Compiles and hot-reloads for development
