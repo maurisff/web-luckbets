@@ -1,7 +1,7 @@
 import axios from 'axios';
 import firebase from 'firebase/app'
 import 'firebase/auth'
-const statusAccept = [401, 403]
+const statusAccept = [400, 401, 403]
 // console.log('API-Config: ', global.App, (sessionStorage.getItem('utoken') || localStorage.getItem('utoken')) )
 const instance =  axios.create({ baseURL: (process.env.VUE_APP_ROOT_API ? process.env.VUE_APP_ROOT_API :  '/') })
 
