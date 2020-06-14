@@ -97,7 +97,7 @@
       <router-view></router-view>
     </v-content>
     <v-footer :fixed="fixed" app v-if="!isAcessoOuErro">
-      <span>&copy; 2018</span>
+      <span>&copy; 2020</span>
     </v-footer>
   </v-app>
 </template>

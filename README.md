@@ -21,7 +21,7 @@ touch .env.[MODE]
 ### Add the environment variables needed to boot the server into the .env file:
 ```bash
 VUE_APP_ROOT_API=http://localhost:4000/
-VUE_APP_TITLE=auth-fb-node
+VUE_APP_TITLE=AppName
 VUE_APP_FIREBASE_JSON_CONFIG={"apiKey":"api-key","authDomain":"project-id.firebaseapp.com","databaseURL":"https://project-id.firebaseio.com","projectId":"project-id","storageBucket":"project-id.appspot.com","messagingSenderId":"sender-id","appID":"app-id",,"measurementId":"measurementId"}
 VUE_APP_FIREBASE_AUTH_PROVIDER=["PASSWORD","GOOGLE", "FACEBOOK", 'TWITTER']
 ```
@@ -44,16 +44,6 @@ npm run build
 ### Compiles, minifies and deploy for production on Firebase Hosting - MODE: Production
 ```
 npm run deploy
-```
-
-### Compiles and minifies for staging - MODE: Production
-```
-npm run buildDemo
-```
-
-### Compiles, minifies and deploy for staging on Firebase Hosting - MODE: Production
-```
-npm run deployDemo
 ```
 
 ### Compiles and minifies for development with API on Herokuapp - MODE: Development

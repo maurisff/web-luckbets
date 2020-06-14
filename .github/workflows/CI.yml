@@ -1,0 +1,43 @@
+name: CI Production
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+jobs:
+  build:
+    name: Build and Deploy Production
+    runs-on: ubuntu-latest
+    if: (github.ref == 'refs/heads/master' && 1 == 2 )
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@master
+      - name: Get Node_Modules cache directory
+        id: npm-cache
+        run: |
+          echo "::set-output name=dir::$(npm config get cache)"
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.npm-cache.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install Dependencies
+        run: npm install
+      - name: Build
+        env:
+          NODE_ENV: ${{ 'production' }}
+          VUE_APP_TITLE: ${{ 'Luck Bets' }}
+          VUE_APP_AUTH_PROVIDER: ${{ '["PASSWORD","GOOGLE"]' }}
+          VUE_APP_ROOT_API: ${{ secrets.PRODUCTION_ROOT_API }}
+          VUE_APP_FIREBASE_JSON_CONFIG: ${{ secrets.PRODUCTION_FIREBASE_JSON_CONFIG }}
+        run: npm run build
+      - name: Deploy to Firebase
+        if: success()
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only hosting
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
