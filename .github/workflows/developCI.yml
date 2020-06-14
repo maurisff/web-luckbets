@@ -8,12 +8,22 @@ on:
       - develop
 jobs:
   build:
-    name: Build Develop
+    name: Build and Deploy Develop
     runs-on: ubuntu-latest
     if: (github.ref == 'refs/heads/develop')
     steps:
       - name: Checkout Repo
         uses: actions/checkout@master
+      - name: Get Node_Modules cache directory
+        id: npm-cache
+        run: |
+          echo "::set-output name=dir::$(npm config get cache)"
+      - uses: actions/cache@v2
+        with:
+          path: ${{ steps.npm-cache.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
       - name: Install Dependencies
         run: npm install
       - name: Build
@@ -24,25 +34,8 @@ jobs:
           VUE_APP_ROOT_API: ${{ secrets.DEVELOP_ROOT_API }}
           VUE_APP_FIREBASE_JSON_CONFIG: ${{ secrets.DEVELOP_FIREBASE_JSON_CONFIG }}
         run: npm run build
-      - name: Archive Production Artifact
-        uses: actions/upload-artifact@master
-        with:
-          name: dist
-          path: dist  
-  deploy:
-    name: Deploy Develop
-    needs: build
-    runs-on: ubuntu-latest
-    if: (ggithub.ref == 'refs/heads/develop' && success())
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@master
-      - name: Download Artifact
-        uses: actions/download-artifact@master
-        with:
-          name: dist
-          path: dist
       - name: Deploy to Firebase
+        if: success()
         uses: w9jds/firebase-action@master
         with:
           args: deploy --only hosting --project develop
