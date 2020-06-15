@@ -176,8 +176,7 @@ export default {
         vm.data = [];
         if (response.status === 200 && response.data && response.data.success){
           const { data = [] } = response.data
-          vm.data = data
-          console.log('vm.data: ', vm.data);
+          vm.data = data;
         }
       }).catch(error => {
         console.error('Error get pessoa: ', error)

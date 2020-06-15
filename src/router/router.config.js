@@ -226,7 +226,7 @@
     },
     component: lazyLoading('administracao/Sorteios')
   }, {
-    path: '/usuario',
+    path: '/perfil',
     meta: {
       codigo: 'ADM999',
       isMenu: true,
@@ -235,7 +235,7 @@
       icon: 'mdi-account-circle-outline',
       colorIcon: null
     },
-    component: lazyLoading('layout/Home')
+    component: lazyLoading('layout/Profile')
   }
 
 ]
