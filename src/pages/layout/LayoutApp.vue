@@ -319,6 +319,7 @@
     },
     async created(){
       this.initAcessos();
+      // console.log(' this.$route.: ', this.$route)
     },
     watch:{
       darkMode(mode) {

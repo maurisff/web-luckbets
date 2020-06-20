@@ -87,8 +87,12 @@
     },
     component: lazyLoading('cadastro/Pessoa')
   }, {
-    path: '/modalidade/megasena',
-    meta: {   
+    path: '/sorteio/megasena',
+    meta: {
+      modalidade : {
+        titulo: 'Megasena',
+        codigo: 'MEGASENA'
+      },
       codigo: 'MOD001',
       isMenu: true,
       order: 1,
@@ -97,13 +101,17 @@
       colorIcon: '#209869',
       groupOrder: 2,
       groupTitle: 'Sorteios',
-      groupIcon: 'create',
+      groupIcon: 'mdi-clover',
       groupColorIcon: null
     },
-    component: lazyLoading('layout/Home')
+    component: lazyLoading('sorteios/Sorteio')
   }, {
-    path: '/modalidade/lotofacil',
-    meta: {   
+    path: '/sorteio/lotofacil',
+    meta: {
+      modalidade : {
+        titulo: 'Lotofácil',
+        codigo: 'LOTOFACIL'
+      },
       codigo: 'MOD002',
       isMenu: true,
       order: 2,
@@ -112,13 +120,17 @@
       colorIcon: '#930089',
       groupOrder: 2,
       groupTitle: 'Sorteios',
-      groupIcon: 'create',
+      groupIcon: 'mdi-clover',
       groupColorIcon: null
     },
-    component: lazyLoading('layout/Home')
+    component: lazyLoading('sorteios/Sorteio')
   }, {
-    path: '/modalidade/quina',
-    meta: {   
+    path: '/sorteio/quina',
+    meta: {
+      modalidade : {
+        titulo: 'Quina',
+        codigo: 'QUINA'
+      },
       codigo: 'MOD003',
       isMenu: true,
       order: 3,
@@ -127,13 +139,17 @@
       colorIcon: '#260085',
       groupOrder: 2,
       groupTitle: 'Sorteios',
-      groupIcon: 'create',
+      groupIcon: 'mdi-clover',
       groupColorIcon: null
     },
-    component: lazyLoading('layout/Home')
+    component: lazyLoading('sorteios/Sorteio')
   }, {
-    path: '/modalidade/diadesorte',
-    meta: {   
+    path: '/sorteio/diadesorte',
+    meta: { 
+      modalidade : {
+        titulo: 'Dia de Sorte',
+        codigo: 'DIADESORTE'
+      },  
       codigo: 'MOD004',
       isMenu: true,
       order: 4,
@@ -142,13 +158,17 @@
       colorIcon: '#cb852b',
       groupOrder: 2,
       groupTitle: 'Sorteios',
-      groupIcon: 'create',
+      groupIcon: 'mdi-clover',
       groupColorIcon: null
     },
-    component: lazyLoading('layout/Home')
+    component: lazyLoading('sorteios/Sorteio')
   }, {
-    path: '/modalidade/lotomania',
+    path: '/sorteio/lotomania',
     meta: {   
+      modalidade : {
+        titulo: 'Lotomania',
+        codigo: 'LOTOMANIA'
+      },
       codigo: 'MOD005',
       isMenu: true,
       order: 5,
@@ -157,10 +177,10 @@
       colorIcon: '#f78100',
       groupOrder: 2,
       groupTitle: 'Sorteios',
-      groupIcon: 'create',
+      groupIcon: 'mdi-clover',
       groupColorIcon: null
     },
-    component: lazyLoading('layout/Home')
+    component: lazyLoading('sorteios/Sorteio')
   }, {
     path: '/administracao/modalidade',
     meta: {
