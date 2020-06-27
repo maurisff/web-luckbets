@@ -191,7 +191,7 @@ var loginProvider = async (idProvider) => {
     provider.addScope('last_name');
     provider.addScope('email');
   } else if (idProvider === 'TWITTER'){
-    provider = new firebase.auth.FacebookAuthProvider();
+    provider = new firebase.auth.TwitterAuthProvider();
   } else {    
     throw new Error(`ID do Provedor (${idProvider}) não encontrado!`);
   }

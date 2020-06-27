@@ -61,8 +61,8 @@
 </script>
 
 <style scoped>
-  
-.dezenas {
+/*
+.dezenasbkp {
   display: inline-block;
   border-radius: 50%;
   width: 36px;
@@ -74,4 +74,56 @@
   margin-bottom: 4px;
   font-family:Roboto, Arial, Helvetica, sans-serif;
 }
+*/
+.dezenas {
+  display: inline-block;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  padding: 2px 0px;
+  font-size: 16px;
+  text-align: center;
+  margin-right: 1px;
+  margin-bottom: 1px;
+  font-family:Roboto, Arial, Helvetica, sans-serif;
+}
+
+/*
+@media only screen and (min-width: 320px) {
+  .dezenas {	
+    width: 26px;
+    height: 26px;
+    padding: 1%;
+    font-size: 13px;
+    text-align: center;
+    margin-right: 1px;
+    margin-bottom: 1px;
+	}
+}
+*/
+@media only screen and (min-width: 599px) {
+  .dezenas {	
+    width: 32px;
+    height: 32px;
+    padding: 3px;
+    font-size: 18px;
+    text-align: center;
+    margin-right: 1px;
+    margin-bottom: 1px;
+	}
+}
+
+@media only screen and (min-width: 959px) {
+  .dezenas {	
+    width: 40px;
+    height: 40px;
+    padding: 4px;
+    font-size: 22px;
+    text-align: center;
+    margin-right: 1px;
+    margin-bottom: 1px;
+	}
+}
+
+
 </style>

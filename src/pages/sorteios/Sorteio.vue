@@ -1,5 +1,5 @@
 <template>
-  <v-container v-if="!isLoading" fluid grid-list-lg>    
+  <v-container v-if="!isLoading" fluid grid-list-lg v-resize="onResize">    
     <v-data-table
       :search="search"  
       v-model="selected"
@@ -8,6 +8,7 @@
       :items="data"
       dense
       item-key="_id"
+      mobile-breakpoint="0"
       class="elevation-1"
       :items-per-page="rowsPerPage"
       :footer-props="{
@@ -19,7 +20,7 @@
         nextIcon: 'mdi-skip-nex'*/
       }" >
       <template v-slot:top>
-        <v-toolbar flat color="white">          
+        <v-toolbar flat >          
           <v-toolbar-title>
             <span class="headline">{{tituloModalidade}}</span>
           </v-toolbar-title>
@@ -63,6 +64,29 @@
             </v-card>
           </v-dialog>
         </v-toolbar>
+      </template>        
+      <template v-slot:item.mobile="{ item }">
+        <div class="containerMobile">
+          <div class="sorteio">
+            <div class="divConcurso">Concurso:</div> 
+            <div class="divSorteio">{{item.concurso}} - {{moment(item.apuracao).format('L')}}</div>
+          </div>
+          <div class="sorteio">
+            <div class="divConcurso">Premiação</div>
+            <div><span @dblclick="detalhes(item)">{{Number(item.premiacao.find(f => f.faixa = 1)['valor']).toStringPrice()}}</span></div>
+          </div>
+          <div>
+            <v-dezenas v-model="item.resultado"
+              :color="item.modalidadeId.style.corTxtDezena" :backgroundColor=" item.modalidadeId.style.corBGDezena"/>
+            <v-dezenas v-if="item.resultado2 && item.resultado2.size > 0"  v-model="item.resultado2"
+              :color="item.modalidadeId.style.corTxtDezena" :backgroundColor=" item.modalidadeId.style.corBGDezena"/>  
+          </div>
+          <div class="sorteio">
+            <div class="divConcurso">Próximo</div>
+            <div class="divSorteio">{{item.proximoConcurso}} - {{moment(item.proximaApuracao).format('L')}}</div>
+          </div>
+          
+        </div>
       </template>      
       <template v-slot:item.apuracao="{ item }">
         <span>{{moment(item.apuracao).format('L')}}</span>
@@ -76,13 +100,13 @@
       <template v-slot:item.premiacao="{ item }">
         <v-tooltip bottom>
           <template v-slot:activator="{ on: tooltip }">            
-            <span v-on="{ ...tooltip }" @dblclick="detalhes(item)">{{Number(item.premiacao.find(f => f.faixa = 1)['valor']).toStringPrice()}}</span>
+            <span class="premiacao" v-on="{ ...tooltip }" @dblclick="detalhes(item)">{{Number(item.premiacao.find(f => f.faixa = 1)['valor']).toStringPrice()}}</span>
           </template>
           <span>Duplo click para mais detalhes</span>
         </v-tooltip>
       </template>
       <template v-slot:item.proximaApuracao="{ item }">
-        <span>{{moment(item.proximaApuracao).format('L')}}</span>
+        <span>{{moment(item.proximaApuracao).format('L') === moment().format('L') ? 'HOJE' : (moment(item.proximaApuracao).format('L') === moment().add(1, 'days').format('L') ? 'AMANHÃ' : moment(item.proximaApuracao).format('L'))}}</span>
       </template>
       <template v-slot:item.valorPrevisto="{ item }">
         <span>{{Number(item.valorPrevisto).toStringPrice()}}</span>
@@ -124,6 +148,10 @@ export default {
       pagination: {page: 1, pageCount: 0, itemsPerPage: 10},
       selected: [],
       data: [],
+      windowSize: {
+        x : 0,
+        y: 0
+      },
       sorteio:{
         premiacao: []
       },
@@ -133,11 +161,20 @@ export default {
       dialog: false,
       configHeaders: [
         {
+          text: '',
+          align: '',
+          class: '',
+          value: 'mobile',
+          sortable: false,
+          notDisplay: ['sm','md', 'lg', 'xl']
+        },
+        {
           text: 'Concurso',
           align: 'center',
           class: 'longText',
           value: 'concurso',
           sortable: false,
+          notDisplay: ['xs']
         },
         {
           text: 'Data',
@@ -145,13 +182,14 @@ export default {
           class: 'longText',
           value: 'apuracao',
           sortable: false,
+          notDisplay: ['xs']
         },
         {
           text: 'Dezenas',
           align: 'center',
           value: 'resultado',
-          sortable: false,/*
-          notDisplay: ['xs','sm']*/
+          sortable: false,
+          notDisplay: ['xs']
         },
         {
           text: 'Prêmio',
@@ -165,12 +203,14 @@ export default {
           align: 'center',
           value: 'proximoConcurso',
           sortable: false,
+          notDisplay: ['xs']
         },
         {
           text: 'Próximo Data',
           align: 'center',
           value: 'proximaApuracao',
-          sortable: false
+          sortable: false,
+          notDisplay: ['xs']
         },
         {
           text: 'Estimativa',
@@ -233,8 +273,7 @@ export default {
     },
     detalhes(value) {    
       this.sorteio = value
-      this.dialog = true        
-      console.log('detalhes: ', value )
+      this.dialog = true
     },
     async close (refreshData = false) {
       this.dialog = false
@@ -245,6 +284,15 @@ export default {
       if (refreshData === true){
         await this.fetchData()
       }
+    },
+    onResize(){
+      setTimeout(() => {
+        if (this.windowSize.x !== window.innerWidth || this.windowSize.y !== window.innerHeight ){
+          this.windowSize.x = window.innerWidth;
+          this.windowSize.y = window.innerHeight
+        }
+      }, 500);
+      
     }
   },
   computed: {
@@ -275,6 +323,7 @@ export default {
     }
   },
   mounted(){
+    this.onResize();
   },
   created() {
       this.codigoModalidade = this.$route.meta && this.$route.meta.modalidade ? this.$route.meta.modalidade.codigo : null
@@ -288,14 +337,28 @@ export default {
         this.tituloModalidade = this.$route.meta && this.$route.meta.modalidade ? this.$route.meta.modalidade.titulo : null
         this.fetchData();
       }
-    },
-    darkMode(mode) {
-      //theme.dark
-      this.$vuetify.theme.dark = mode
-      localStorage.setItem('appCurrentDarkMode', this.$vuetify.theme.dark)
     }
   }
 }
 </script>
 <style scoped>
+  .containerMobile {
+    justify-content: initial;
+  }
+  .sorteio {
+    display: flex;
+    align-items: center;  
+  }
+  .divConcurso {
+    padding: 2px 5px;
+    font-weight: bold;
+    font-family: Roboto, Arial, Helvetica, sans-serif;
+  }
+  .premiacao {
+    color: grey;
+    font-weight: bold;
+
+  }
+
+
 </style>
