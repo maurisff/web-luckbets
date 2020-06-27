@@ -21,26 +21,10 @@
                 <div class="dataConcurso">{{ moment(item.apuracao).format('L')}}</div>
               </div>
             </div>
-            <div class="conteinerDezenas">
-              <div
-                v-bind:style="{'background': item.modalidadeId.style.corBGDezena, 'color': item.modalidadeId.style.corTxtDezena}"
-                class="dezenas"
-                v-for="(d, i) in (item.resultado)"
-                :key="i"
-                >
-                {{d}}
-              </div>
-            </div>
-            <div v-if="item.resultado2 && item.resultado2.length > 0"  class="conteinerDezenas" >
-              <div 
-                v-bind:style="{'background': item.modalidadeId.style.corBGDezena, 'color': item.modalidadeId.style.corTxtDezena}"
-                class="dezenas"
-                v-for="(d, i) in item.resultado2"
-                :key="i"
-                >
-                {{d}}
-              </div>
-            </div>
+            <v-dezenas v-model="item.resultado" 
+              :color="item.modalidadeId.style.corTxtDezena" :backgroundColor=" item.modalidadeId.style.corBGDezena"/>            
+            <v-dezenas v-if="item.resultado2 && item.resultado2.size > 0"  v-model="item.resultado2" 
+              :color="item.modalidadeId.style.corTxtDezena" :backgroundColor=" item.modalidadeId.style.corBGDezena"/>
             <div class="concursoHeader">          
               <div>
                 Próximo concurso:
@@ -82,8 +66,12 @@
   </v-container>
 </template>
 <script>
+  import dezenas from '@/components/modalidade/sorteio/dezenas'
   export default {
     name: 'component.modalidade.sorteio.ultimo-sorteio',
+    components: {
+      'v-dezenas': dezenas,
+    },
     data(){
       return {
         data: [],
@@ -238,35 +226,25 @@
     font-weight: bold;
     font-family: Roboto, Arial, Helvetica, sans-serif;
   }
+  
   .concursoHeader {
     margin-left: 3px;
     font-family:  Roboto, Arial, Helvetica, sans-serif;
   }
+
   .dataConcurso {
     display: inline-block;
     color: #4c556c;
     font-weight: bold;
     font-family:  Roboto, Arial, Helvetica, sans-serif;
   }
-  .dezenas {
-  display: inline-block;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  padding: 1%;
-  font-size: 14px;
-  text-align: center;
-  margin-right: 4px;
-  margin-bottom: 4px;
-  font-family:Roboto, Arial, Helvetica, sans-serif;
-}
 
-.estimativaPremio {
-  display: inline-block;
-  font-size: 16px;
-  font-weight: bold;
-  color: #4c556c;
-  font-family: Roboto, Arial, Helvetica, sans-serif;
-}
+  .estimativaPremio {
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #4c556c;
+    font-family: Roboto, Arial, Helvetica, sans-serif;
+  }
 
 </style>

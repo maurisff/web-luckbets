@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid grid-list-lg>
+  <v-container  v-if="!isLoading" fluid grid-list-lg>
     <v-layout row wrap>
       <v-flex xs12 sm12 md10 offset-md1>
         <form @submit.prevent="saveProfile">
@@ -52,6 +52,9 @@
       this.fetchData();
     },
     computed:{
+      isLoading () {
+        return this.$store.getters['app/isLoading']
+      },
       userLogado () {
         return this.$store.getters.user;
       },  

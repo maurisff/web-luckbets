@@ -3,13 +3,13 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
     "deploy": "firebase login && firebase use default && vue-cli-service build && firebase deploy --project default",
-    "devHeroku": "vue-cli-service serve --mode herokudev",
     "buildDev": "vue-cli-service build --mode herokudev",
     "deployDev": "firebase login && firebase use develop && vue-cli-service build --mode herokudev && firebase deploy --only hosting --project develop && firebase use default",
-    "lint": "vue-cli-service lint"
+    "dev": "vue-cli-service serve",
+    "devHeroku": "vue-cli-service serve --mode herokudev"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.8.2",
@@ -20,7 +20,7 @@
     "firebase": "^7.14.2",
     "moment": "^2.24.0",
     "normalize.css": "^8.0.1",
-    "register-service-worker": "^1.6.2",
+    "register-service-worker": "^1.7.1",
     "roboto-fontface": "*",
     "shortid": "^2.2.14",
     "v-money": "^0.8.1",
@@ -37,7 +37,7 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.11.0",
     "@vue/cli-plugin-eslint": "^3.11.0",
-    "@vue/cli-plugin-pwa": "^3.11.0",
+    "@vue/cli-plugin-pwa": "^4.4.4",
     "@vue/cli-service": "^3.11.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.16.0",
