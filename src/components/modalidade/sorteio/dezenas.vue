@@ -86,6 +86,14 @@
   margin-right: 1px;
   margin-bottom: 1px;
   font-family:Roboto, Arial, Helvetica, sans-serif;
+  /* Não permite selecionar o texto da dezena*/
+  -webkit-touch-callout: none;  /* iPhone OS, Safari */
+  -webkit-user-select: none;    /* Chrome, Safari 3 */
+  -khtml-user-select: none;     /* Safari 2 */
+  -moz-user-select: none;       /* Firefox */
+  -ms-user-select: none;        /* IE10+ */
+  user-select: none;            /* Possível implementação no futuro */
+  /* cursor: default; */
 }
 
 /*

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '@/store/'
-import configRouter from '@/router/router.config'
+import configRouter from '@/router/router'
 
 Vue.use(Router)
 
@@ -12,8 +12,6 @@ var INSTANCE_ROUTER = new Router({
       redirect: '/erro/404'
     },
     ...configRouter
-    //...generateRoutesFromMenu(store.getters['menu/getMenu'])
-    //...generateRoutesFromMenu(configRouter)
   ]
 })
 

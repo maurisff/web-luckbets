@@ -183,6 +183,7 @@
           }))
           .filter(e => (e.isPublic || vm.auth))
           .filter(e => (!e.isAdmin || (vm.auth && vm.auth.admin)))
+          .sort((a,b) => (a.order-b.order))
       },
       menuItens: function(){     
         if (this.menuAccess && this.menuAccess.length === 1){
@@ -319,7 +320,6 @@
     },
     async created(){
       this.initAcessos();
-      // console.log(' this.$route.: ', this.$route)
     },
     watch:{
       darkMode(mode) {

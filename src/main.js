@@ -4,14 +4,14 @@
 
 import 'normalize.css/normalize.css'; // A modern alternative to CSS resets
 import 'element-ui/lib/theme-chalk/index.css';
-import 'vuejs-dialog/dist/vuejs-dialog.min.css';
-import 'vuejs-dialog/dist/vuejs-dialog-mixin.min.js';
 import '@/util/prototypes.js';
 import '@/config/config';
 import '@/styles/index.css'; // global css
 import Vue from 'vue';
 import './registerServiceWorker';
 import vuetify from '@/plugins/vuetify';
+
+import UUID from '@/plugins/uuid';
 import VueNotification from 'vue-notification'
 import veeValidate from 'vee-validate';
 import Toasted from 'vue-toasted';
@@ -25,9 +25,13 @@ import router from '@/router';
 import money from 'v-money';
 import VueTheMask from 'vue-the-mask'
 
+import 'vuejs-dialog/dist/vuejs-dialog.min.css';
+import 'vuejs-dialog/dist/vuejs-dialog-mixin.min.js';
+
 moment.locale('pt-br')
 Vue.prototype.moment = moment
 
+Vue.use(UUID);
 Vue.use(veeValidate)
 Vue.use(ElementUI, { locale })
 Vue.use(Toasted);

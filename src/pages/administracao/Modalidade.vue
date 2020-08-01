@@ -97,16 +97,16 @@
           edit
         </v-icon>
       </template>
-        <template v-slot:no-data>
-          <v-alert :value="true" color="error" icon="warning">
-            Não ha dados cadastrados
-          </v-alert>
-        </template>
-        <template v-slot:no-results>
-          <v-alert :value="true" color="error" icon="warning">
-            A pesquisa não retornou dados.
-          </v-alert>
-        </template>
+      <template v-slot:no-data>
+        <v-alert :value="true" color="error" icon="warning">
+          Não ha dados cadastrados
+        </v-alert>
+      </template>
+      <template v-slot:no-results>
+        <v-alert :value="true" color="error" icon="warning">
+          A pesquisa não retornou dados.
+        </v-alert>
+      </template>
     </v-data-table>    
     <div class="text-xs-center pt-2">
       <v-pagination v-model="pagination.page" :length="pagination.pageCount" ></v-pagination>

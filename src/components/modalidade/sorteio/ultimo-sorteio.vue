@@ -18,7 +18,15 @@
               <div class="concursoHeader">
                 Concurso: 
                 <div class="dataConcurso">{{ item.concurso }}</div> - 
-                <div class="dataConcurso">{{ moment(item.apuracao).format('L')}}</div>
+                <div class="dataConcurso">{{ moment(item.apuracao).format('L')}}</div>                
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on: tooltip }" >
+                    <v-btn v-if="isLogado" text  v-on="{ ...tooltip }" dark absolute fab top small right :color="item.modalidadeId.style.corTitulo" :to="`/volante/${item.modalidadeId.codigo.toString().toLowerCase()}/apostar`">
+                      <v-icon>mdi-plus-circle</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>Apostar em {{item.modalidadeId.titulo}}!</span>
+                </v-tooltip>
               </div>
             </div>
             <v-dezenas v-model="item.resultado" 
@@ -40,7 +48,7 @@
             </div>
             <v-expansion-panels accordion flat>
               <v-expansion-panel >
-                <v-expansion-panel-header v-bind:color="item.premiado ? 'green': ''" >{{item.premiado ? 'Premiação - Parabéns você foi premiado!': 'Premiação'}}</v-expansion-panel-header>
+                <v-expansion-panel-header v-bind:color="item.premiado ? 'green': ''" >{{item.premiado ? 'Premiação - Parabéns você possui apostas premiadas!': 'Premiação'}}</v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <v-data-table 
                     :headers="headersPremiacao" 
@@ -59,7 +67,7 @@
               </v-expansion-panel>
             </v-expansion-panels>
 
-          </div>
+          </div> 
         </v-card>  
       </v-col>
     </v-row>
@@ -130,75 +138,11 @@
     async mounted(){
     },
     async created() {
-      /*
-      this.data = [{
-        resultado: [
-            18,
-            3,
-            9,
-            22,
-            1,
-            20,
-            24,
-            13,
-            14,
-            10,
-            19,
-            15,
-            7,
-            17,
-            11
-        ],
-        resultado2: [],
-        concurso: 1976,
-        modalidadeId: {
-            style: {
-                corTitulo: '#930089',
-                corBGDezena: '#930089',
-                corTxtDezena: '#ffffff',
-                corDefaulBGDezena: '',
-                corDefaulTxtDezena: ''
-            },
-            codigo: 'LOTOFACIL',
-            titulo: 'Lotofácil',
-            valorApostaMinima: 2.5
-        },
-        apuracao: '2020-06-05T03:00:00.000Z',
-        proximoConcurso: 19761,
-        proximaApuracao: '2020-06-08T03:00:00.000Z',
-        valorPrevisto: 2.5,
-        premiacao: [{
-                faixa: 1,
-                dezenas: 15,
-                ganhadores: 7,
-                valor: 255447.27
-            }, {
-                faixa: 2,
-                dezenas: 14,
-                ganhadores: 965,
-                valor: 814.49
-            }, {
-                faixa: 3,
-                dezenas: 13,
-                ganhadores: 28155,
-                valor: 25
-            }, {
-                faixa: 4,
-                dezenas: 12,
-                ganhadores: 270902,
-                valor: 10
-            }, {
-                faixa: 5,
-                dezenas: 11,
-                ganhadores: 1212649,
-                valor: 5
-            }
-        ]
-      }]
-      */
     },
     computed: {
-      
+      isLogado:  function () {
+        return (this.$store.getters['authentication/user'] !== null && this.$store.getters['authentication/user'] !== undefined);
+      }      
     }
   }
 
