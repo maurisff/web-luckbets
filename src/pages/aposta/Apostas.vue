@@ -64,14 +64,14 @@
             </v-card-actions>
           </v-card>
         </v-menu>
-        <v-btn class="" icon :to="`/volante/${codigoModalidade.toString().toLowerCase()}/apostar`">
+        <v-btn class="" icon @click="apostar">
           <v-icon dark>mdi-plus</v-icon>
         </v-btn>
     </v-toolbar>
     <div v-if="$vuetify.breakpoint.xsOnly">
         <v-list two-line elevation="6">
           <template v-if="!resultData || resultData.length === 0">
-            <v-list-item dense class="pa-0" v-bind:style="{'background': ((defaultData && defaultData.length > 0) ? 'yellow': 'red')}" >
+            <v-list-item dense class="pa-0" v-bind:style="{'background': ((defaultData && defaultData.length > 0) ? 'red': 'yellow')}" >
               <v-list-item-content class="pa-1" >                
                 <v-list-item-title class="d-flex d-block justify-center px-1"  >
                   {{(defaultData && defaultData.length > 0) ? 'Filtro não retornou dados!': 'Voçê não possui apostas!'}}
@@ -120,12 +120,12 @@
                         <v-list-item-title>Detalhes</v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
-                    <v-list-item @click="editarAposta(item)">
+                    <v-list-item v-if="false" @click="duplicarAposta(item)">
                       <v-list-item-icon>
-                        <v-icon color="blue">mdi-pencil</v-icon>
+                        <v-icon color="blue">mdi-open-in-new</v-icon>
                       </v-list-item-icon>
                       <v-list-item-content>
-                        <v-list-item-title>Editar</v-list-item-title>
+                        <v-list-item-title>Duplicar</v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                     <v-list-item @click="excluirAposta(item)">
@@ -298,13 +298,44 @@ export default {
           return (item[p]||'').toString() === (this.search||'').toString()
         }
       })
+    },    
+    async apostar (){
+      // console.log('Router', this.$route.path)
+      // `/volante/${codigoModalidade.toString().toLowerCase()}/apostar`
+      const parm = {
+        redirect: this.$route.path,
+      }
+      const p = btoa(JSON.stringify(parm))      
+      this.$router.push({ path: `/volante/${this.codigoModalidade.toString().toLowerCase()}/apostar?p=${p}` }).catch(() => { });
     },
-    
-    async editarAposta (item){
-      await this.$store.dispatch('app/setMessage', { type: 'warn', message: `Ainda não é possível alterar a aposta do concurso ${item.concurso}. Funcionalidade em desenvolvimento!` }, { root: true });
+    async duplicarAposta (item){
+
+
+      //await this.$store.dispatch('app/setMessage', { type: 'warning', message: `Ainda não é possível Duplicar a aposta do concurso ${item.concurso}. Funcionalidade em desenvolvimento!` }, { root: true });
+
+      // console.log('Router', this.$route.path)
+      // `/volante/${codigoModalidade.toString().toLowerCase()}/apostar`
+      const parm = {
+        jogoId: item._id,
+        redirect: this.$route.path,
+      }
+      const p = btoa(JSON.stringify(parm))      
+      this.$router.push({ path: `/volante/${this.codigoModalidade.toString().toLowerCase()}/apostar?p=${p}` }).catch(() => { });
+
     },
     async excluirAposta (item){
-      await this.$store.dispatch('app/setMessage', { type: 'warn', message: `Ainda não é possível excluir a aposta do concurso ${item.concurso}. Funcionalidade em desenvolvimento!` }, { root: true });
+      const deletedIdx = this.defaultData.findIndex(f=> f._id === item._id )
+      this.$dialog.confirm(`Deseja excluir a aposta no concurso ${item.concurso} da ${item.modalidadeId.titulo} ?`, { loader: true}).then(async (dialog) => {
+        await app.delete(`api/aposta/${item._id}`).then(async (response) => {
+          if (response.status === 200 && response.data && response.data.success){
+            await this.defaultData.splice(deletedIdx, 1);
+          }
+          await this.filterData();
+        }).catch(error => {
+          console.error('Error get pessoa: ', error)
+        });
+        dialog.close();
+      }).catch(() => {})      
     },
     async openDetail (item){
       if (item){
@@ -362,7 +393,7 @@ export default {
     },
     resultData(){
       const aux = this.data.filter( (f) => this.custonSearch(f)) || [];
-      console.log(`resultData${this.search}: `, aux)
+      // console.log(`resultData${this.search}: `, aux)
       return aux || []
     }
   },

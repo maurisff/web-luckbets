@@ -356,6 +356,7 @@ export default {
       if (p){
         try {
           parm = await JSON.parse(atob(p))
+          console.log('parameters: ', parm)
         } catch (e) {
           parm = {}
         }
@@ -530,6 +531,9 @@ export default {
           if (response.status === 200 && response.data && response.data.success){
             this.$store.dispatch('app/setMessage',{ type: 'success', message: 'Aposta registrada com com sucesso!' }, { root: true });
             this.clearAll()
+            if (this.goBack){
+              this.$router.push({ path: this.goBack }).catch(() => { });
+            }
           } else {
             this.$store.dispatch('app/setMessage',{ type: 'error', message: response.data.data }, { root: true });
           }
@@ -617,9 +621,9 @@ export default {
 .dezena {
   display: inline-block;
   border-radius: 50%;
-  width: 28px;
-  height: 28px;
-  padding: 2px 0px;
+  width: 34px;
+  height: 34px;
+  padding: 6px 4px;
   font-size: 20px;
   text-align: center;
   margin-right: 1px;

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from '@/store/'
 import configRouter from '@/router/router'
+import lazyLoading from '@/util/lazyLoading'
 
 Vue.use(Router)
 
@@ -9,7 +10,11 @@ var INSTANCE_ROUTER = new Router({
   mode: 'history', //com isso no FirebaseHosting se perde na hora de carregar a pagina pela URL
   routes: [{
       path: '*',
-      redirect: '/erro/404'
+      // redirect: '/erro/404'
+      meta: {
+        isPublic: true
+      },
+      component: lazyLoading('erro/NotFound')
     },
     ...configRouter
   ]

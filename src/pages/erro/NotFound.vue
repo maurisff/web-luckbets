@@ -3,6 +3,7 @@
 		<div class="notfound">
 			<div class="notfound-404"></div>
 			<h1>404</h1>
+			<span>{{$route.fullPath}}</span>
 			<h2>Oops! Page not Found</h2>
 			<p/>
       <v-btn outlined block dark color="primary" @click.stop="goHome">Home Page</v-btn>
