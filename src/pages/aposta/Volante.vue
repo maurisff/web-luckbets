@@ -356,7 +356,7 @@ export default {
       if (p){
         try {
           parm = await JSON.parse(atob(p))
-          console.log('parameters: ', parm)
+          // console.log('parameters: ', parm)
         } catch (e) {
           parm = {}
         }

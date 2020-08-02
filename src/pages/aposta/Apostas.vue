@@ -68,7 +68,8 @@
           <v-icon dark>mdi-plus</v-icon>
         </v-btn>
     </v-toolbar>
-    <div v-if="$vuetify.breakpoint.xsOnly">
+    <!--<div v-if="$vuetify.breakpoint.xsOnly">-->
+      <div>
         <v-list two-line elevation="6">
           <template v-if="!resultData || resultData.length === 0">
             <v-list-item dense class="pa-0" v-bind:style="{'background': ((defaultData && defaultData.length > 0) ? 'red': 'yellow')}" >
@@ -180,10 +181,11 @@
           </v-card>
         </v-dialog>
     </div>
+    <!--
     <div v-else>
       Visão para desktop
     </div>
-
+    -->
   </v-container>
 </template>
 <script>  
@@ -377,7 +379,7 @@ export default {
           this.defaultData = data;          
         }
         await this.filterData();  
-        console.log('Meus jogos: ', this.defaultData)
+        // console.log('Meus jogos: ', this.defaultData)
       }).catch(error => {
         console.error('Error get pessoa: ', error)
       });      
@@ -402,7 +404,7 @@ export default {
   },
   created() {
       this.onChageModalidade();
-      console.log('resultData: ', this.resultData)
+      // console.log('resultData: ', this.resultData)
   },
   watch:{
     $route(current, old){
