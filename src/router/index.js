@@ -9,13 +9,16 @@ Vue.use(Router)
 var INSTANCE_ROUTER = new Router({
   mode: 'history', //com isso no FirebaseHosting se perde na hora de carregar a pagina pela URL
   routes: [{
+      path: '/index.html',
+      redirect: '/'
+    },
+    {
       path: '*',
-      // redirect: '/erro/404'
       meta: {
         isPublic: true
       },
       component: lazyLoading('erro/NotFound')
-    },
+    },    
     ...configRouter
   ]
 })
