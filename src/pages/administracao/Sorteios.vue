@@ -72,6 +72,7 @@
   </v-container>
 </template>
 <script>  
+/* eslint-disable no-console */
 import app from '@/services/app'
 export default {
   name: 'pages.administracao.Sorterios',

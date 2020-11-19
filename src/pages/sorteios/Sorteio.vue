@@ -267,7 +267,8 @@ export default {
           vm.data = data;
         }
       }).catch(error => {
-        console.error('Error get pessoa: ', error)
+        // eslint-disable-next-line no-console
+        console.error('Error get sorteio: ', error)
       });        
       vm.$store.dispatch('app/setLoading', false, { root: true });      
     },

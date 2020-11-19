@@ -58,6 +58,7 @@ export default {
           this.sorteios = data
         }
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('Error get ultimosresultados: ', error)        
       }  
       vm.$store.dispatch('app/setLoading', false, { root: true });      

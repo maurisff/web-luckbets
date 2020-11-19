@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 let config = {}
 try {
   if (process.env.VUE_APP_FIREBASE_JSON_CONFIG){

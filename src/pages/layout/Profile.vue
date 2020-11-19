@@ -72,6 +72,7 @@
             vm.profile = data
           }
         }).catch(error => {
+          // eslint-disable-next-line no-console
           console.error('Error get usuariologado/usuario: ', error)
         });
         await app.get('api/modalidade').then(async (response) => {
@@ -81,6 +82,7 @@
             vm.modalidades = data.map(el => ({codigo: el.codigo, titulo: el.titulo}))
           }
         }).catch(error => {
+          // eslint-disable-next-line no-console
           console.error('Error get modalidade: ', error)
         });
         vm.$store.dispatch('app/setLoading', false, { root: true });

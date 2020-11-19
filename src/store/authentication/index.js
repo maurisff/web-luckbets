@@ -2,7 +2,6 @@ import app from '@/services/app'
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/messaging';
-
 export default {
   namespaced: true, 
   state: {
@@ -128,7 +127,8 @@ export default {
           }
         } catch (error) {
           currentAuth = null;
-          console.error('app.get => /api/usuariologado/usuario - Error: ', error, error.code)
+          // console.error('app.get => /api/usuariologado/usuario - Error: ', error, error.code)
+          logger.addLogger('error', ['app.get => /api/usuariologado/usuario - Error: ', error, error.code])
         }
       }
       

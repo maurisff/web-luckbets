@@ -382,6 +382,7 @@ export default {
           throw 'Opss!! Algo de errado esta acontecendo. Tente novamente mais tarde!'
         }
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('get->api/modalidade: ', error.message)
       }     
 
@@ -399,11 +400,43 @@ export default {
           throw 'Opss!! Algo de errado esta acontecendo. Tente novamente mais tarde!'
         }
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error('get->api/ultimoresultado: ', error.message)
       }
 
       const arr = await Array.from({length:(this.modalidade.dezenas || 0)},(a,b)=> b+1)
       this.volante = arr.map(d => ({selected: false, dezena: d}))
+      
+      // Consultar jogo para duplicar
+      if (parm && parm.jogoId) {
+        try {
+        let {status, data}  = await app.get(`api/aposta/${parm.jogoId}`)
+        if (status === 200 && data.data){
+          const { jogos } = data.data;         
+          
+          for (let i = 0; i < jogos.length; i++) {
+            const jogo = jogos[i];
+            let valorCombinacao = await this.valorCustoCombinacao(jogo.dezenas.length, this.modalidade.minDezenas , this.modalidade.valorApostaMinima)
+            const valorCusto = Number((jogo.valorCusto || valorCombinacao))
+            await this.jogos.push({
+              id: this.$uuid.v1(),
+              dezenas: jogo.dezenas,
+              cota: jogo.cota,
+              cotas: jogo.cotas,
+              valorCusto,
+              isCustoBolao: (Number(valorCusto) !== Number(valorCombinacao))
+            })
+          }
+        } else {
+          // eslint-disable-next-line no-console
+          console.error('get-aposta-error: ', data);          
+          // throw 'Opss!! Algo de errado esta acontecendo. Tente novamente mais tarde!'
+        }
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('get->api/ultimoresultado: ', error.message)
+      }
+      }
       
       if (parm && parm.redirect && this.$router.options.routes.some(v=> v.path === parm.redirect)){
         this.goBack = parm.redirect;
@@ -524,7 +557,7 @@ export default {
           cotas: m.cotas, 
           valorCusto: m.valorCusto
         })),
-        bolao: []
+        bolao: [] //TODO: Melhoria a fazer
       }
       this.$dialog.confirm('Finalizar Aposta?', { loader: true}).then(async (dialog) => {
         await app.post('api/aposta', aposta).then(async (response) => {

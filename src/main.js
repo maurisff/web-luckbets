@@ -7,6 +7,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 import '@/util/prototypes.js';
 import '@/config/config';
 import '@/styles/index.css'; // global css
+import "@/plugins/Logger"
 import Vue from 'vue';
 import './registerServiceWorker';
 import vuetify from '@/plugins/vuetify';

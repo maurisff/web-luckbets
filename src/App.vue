@@ -32,6 +32,7 @@ export default {
   methods:{
     onReceiverNotification: function(){      
       firebase.messaging().onMessage(function(payload) {
+        // eslint-disable-next-line no-console
         console.log('messaging().onMessage: ', payload);
         /** payload:
          * notification: {

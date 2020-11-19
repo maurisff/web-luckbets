@@ -179,6 +179,7 @@ export default {
           vm.data = data;
         }
       }).catch(error => {
+        // eslint-disable-next-line no-console
         console.error('Error get pessoa: ', error)
       });        
       vm.$store.dispatch('app/setLoading', false, { root: true });      

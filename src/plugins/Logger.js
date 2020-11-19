@@ -26,6 +26,9 @@ class ServerLogger {
   }
 
   addLogger(type, log){
+    if (type === 'error'){      
+      console.error(log)
+    }
     this.arrayLogger.push({type, log});
   }
 

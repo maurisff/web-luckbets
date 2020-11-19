@@ -121,12 +121,12 @@
                         <v-list-item-title>Detalhes</v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
-                    <v-list-item v-if="false" @click="duplicarAposta(item)">
+                    <v-list-item @click="duplicarAposta(item)">
                       <v-list-item-icon>
                         <v-icon color="blue">mdi-open-in-new</v-icon>
                       </v-list-item-icon>
                       <v-list-item-content>
-                        <v-list-item-title>Duplicar</v-list-item-title>
+                        <v-list-item-title>Apostar Novamente</v-list-item-title>
                       </v-list-item-content>
                     </v-list-item>
                     <v-list-item @click="excluirAposta(item)">
@@ -311,8 +311,6 @@ export default {
       this.$router.push({ path: `/volante/${this.codigoModalidade.toString().toLowerCase()}/apostar?p=${p}` }).catch(() => { });
     },
     async duplicarAposta (item){
-
-
       //await this.$store.dispatch('app/setMessage', { type: 'warning', message: `Ainda não é possível Duplicar a aposta do concurso ${item.concurso}. Funcionalidade em desenvolvimento!` }, { root: true });
 
       // console.log('Router', this.$route.path)
@@ -321,7 +319,8 @@ export default {
         jogoId: item._id,
         redirect: this.$route.path,
       }
-      const p = btoa(JSON.stringify(parm))      
+      const p = btoa(JSON.stringify(parm))
+      
       this.$router.push({ path: `/volante/${this.codigoModalidade.toString().toLowerCase()}/apostar?p=${p}` }).catch(() => { });
 
     },
@@ -334,6 +333,7 @@ export default {
           }
           await this.filterData();
         }).catch(error => {
+          // eslint-disable-next-line no-console
           console.error('Error get pessoa: ', error)
         });
         dialog.close();
@@ -381,6 +381,7 @@ export default {
         await this.filterData();  
         // console.log('Meus jogos: ', this.defaultData)
       }).catch(error => {
+        // eslint-disable-next-line no-console
         console.error('Error get pessoa: ', error)
       });      
       this.$store.dispatch('app/setLoading', false, { root: true });      

@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable no-useless-escape */
 import moment from 'moment'
-import "@/plugins/Logger";
 // TODO: String -----------------------------------------------------------------------------------
 String.prototype.retornaNumeros = function() {
   return (isNaN(this.valueOf().replace(/[^\d.,-]/g, '').replace(/\./gi, "").replace(/\,/gi, "."))? 0 : Number(this.valueOf().replace(/[^\d.,-]/g, '').replace(/\./gi, "").replace(/\,/gi, ".")))
@@ -45,6 +44,7 @@ Array.prototype.arraySumProperty = function(property) {
 
 
 // TODO: Globals -----------------------------------------------------------------------------------
+/*
 var exLog = console.log;
 console.log = function() {
   if (process.env.NODE_ENV === 'development') {
@@ -78,3 +78,4 @@ console.error = function() {
     logger.addLogger('error', arguments)
   }
 }
+*/

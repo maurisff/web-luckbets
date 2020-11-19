@@ -30,7 +30,8 @@ async () => {
   });
 
   messaging.onMessage(payload => {
-    console.log('firebase.messaging().onMessage: ', payload);
+        // eslint-disable-next-line no-console
+        console.log('DEBUG-firebase.messaging().onMessage: ', payload);
     /** payload:
      * notification: {
      *   title: 'New message',
