@@ -2,7 +2,7 @@
   
   const menuGroup = {
     groupOrder: 1,
-    groupTitle: 'Aportar',
+    groupTitle: 'Apostar',
     groupIcon: 'mdi-clover',
     groupColorIcon: null
   }
