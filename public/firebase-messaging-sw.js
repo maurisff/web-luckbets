@@ -68,7 +68,7 @@ const config = {
 // eslint-disable-next-line no-undef
 const app = firebase.initializeApp(config);
 const messaging = app.messaging();
-const axios = self.axios;
+// const axios = self.axios;
 
 const handlerNotification = async function (payload) {  
   // console.log('[firebase-messaging-sw.js] Received background message ', payload, JSON.stringify(payload));
@@ -143,7 +143,12 @@ self.addEventListener('notificationclick', async function(event) {
     if (urlAction){      
       console.log('Action - url ',event.action , urlAction)
       try {        
-        await axios.post(urlAction)
+        const response = await self.axios({
+          method: 'post',
+          url: urlAction,
+          data: {}
+        });
+        console.log(response)
       } catch (error) {
         console.error('notificationclick-Error: ', error)
       }
