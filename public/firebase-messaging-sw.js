@@ -4,7 +4,7 @@ importScripts('https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js');
 // eslint-disable-next-line no-undef
 importScripts('https://www.gstatic.com/firebasejs/4.8.1/firebase-messaging.js');
 // eslint-disable-next-line no-undef
-importScripts('https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js');
+// importScripts('https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js');
 /*
 const requestFetch = async (url, method, data = {}, headers = {}) => {  
   var myHeaders = new Headers(headers);
@@ -141,12 +141,19 @@ self.addEventListener('notificationclick', function(event) {
   if (event.action){
     const urlAction = event.notification.data.action ? event.notification.data.action[event.action] : null
     if (urlAction){      
-      console.log('Action - url ',event.action , urlAction)
+      console.log('Action - url ',event.action , urlAction)      
+      self.fetch(urlAction, { method: 'post', body: null }).then(function(response) { 
+        console.log('notificationclick-response: : ', response); 
+      }).catch(function(error) { 
+        console.error('notificationclick-Error: ',error); 
+      });
+      /*
       self.axios.post(urlAction,{}).then(function (response) {
         console.log('notificationclick-response: ', response);
       }).catch(function (error) {
         console.error('notificationclick-Error: ', error)
       });
+      */
     }
     switch (event.action) {
       case 'IGNORAR_SORTEIO':
