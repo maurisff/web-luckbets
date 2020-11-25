@@ -131,8 +131,6 @@ const handlerNotification = async function (payload) {
 
 self.addEventListener('notificationclick', function(event) {
   event.notification.close(); // Android needs explicit close.
-  
-  console.log('notificationClick event: ', event);
   /**Para Implementação de multiplas ações:
    * https://stackoverflow.com/a/50853078
    * https://web-push-book.gauntface.com/chapter-05/02-display-a-notification/
@@ -140,31 +138,11 @@ self.addEventListener('notificationclick', function(event) {
    */
   if (event.action){
     const urlAction = event.notification.data.action ? event.notification.data.action[event.action] : null
-    if (urlAction){      
-      console.log('Action - url ',event.action , urlAction)      
-      self.fetch(urlAction, { method: 'post', body: null }).then(function(response) { 
-        console.log('notificationclick-response: : ', response); 
+    if (urlAction){
+      self.fetch(urlAction, { method: 'post', body: null }).then(function(response) {
       }).catch(function(error) { 
         console.error('notificationclick-Error: ',error); 
       });
-      /*
-      self.axios.post(urlAction,{}).then(function (response) {
-        console.log('notificationclick-response: ', response);
-      }).catch(function (error) {
-        console.error('notificationclick-Error: ', error)
-      });
-      */
-    }
-    switch (event.action) {
-      case 'IGNORAR_SORTEIO':
-        console.log('IGNORAR_SORTEIO');
-        break;
-      case 'APOSTAR':
-        console.log('APOSTAR');
-        break;
-      default:
-        console.log(`Unknown action clicked: '${event.action}'`);
-        break;
     }
   }
 
