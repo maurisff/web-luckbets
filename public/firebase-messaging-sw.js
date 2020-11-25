@@ -68,7 +68,7 @@ const config = {
 // eslint-disable-next-line no-undef
 const app = firebase.initializeApp(config);
 const messaging = app.messaging();
-// const axios = self.axios;
+const axios = self.axios;
 
 const handlerNotification = async function (payload) {  
   // console.log('[firebase-messaging-sw.js] Received background message ', payload, JSON.stringify(payload));
@@ -129,7 +129,7 @@ const handlerNotification = async function (payload) {
   }
 }
 
-self.addEventListener('notificationclick', function(event) {
+self.addEventListener('notificationclick', async function(event) {
   event.notification.close(); // Android needs explicit close.
   
   console.log('notificationClick event: ', event);
@@ -139,11 +139,17 @@ self.addEventListener('notificationclick', function(event) {
    * 
    */
   if (event.action){
+    const urlAction = event.notification.data.action ? event.notification.data.action[event.action] : null
+    if (urlAction){      
+      console.log('Action - url ',event.action , urlAction)
+      try {        
+        await axios.post(urlAction)
+      } catch (error) {
+        console.error('notificationclick-Error: ', error)
+      }
+    }
     switch (event.action) {
       case 'IGNORAR_SORTEIO':
-        if (event.notification.data.action[event.action]){
-          console.log('Action - url - parameter',event.action , event.notification.data.action[event.action])
-        }        
         console.log('IGNORAR_SORTEIO');
         break;
       case 'APOSTAR':
@@ -153,7 +159,6 @@ self.addEventListener('notificationclick', function(event) {
         console.log(`Unknown action clicked: '${event.action}'`);
         break;
     }
-
   }
 
   // documentação: https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerGlobalScope/notificationclick_event
