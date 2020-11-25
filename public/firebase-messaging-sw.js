@@ -142,16 +142,15 @@ self.addEventListener('notificationclick', async function(event) {
     const urlAction = event.notification.data.action ? event.notification.data.action[event.action] : null
     if (urlAction){      
       console.log('Action - url ',event.action , urlAction)
-      try {        
-        const response = await self.axios({
-          method: 'post',
-          url: urlAction,
-          data: {}
-        });
-        console.log(response)
-      } catch (error) {
+      self.axios({
+        method: 'post',
+        url: urlAction,
+        data: {}
+      }).then(function (response) {
+        console.log('notificationclick-response: ', response);
+      }).catch(function (error) {
         console.error('notificationclick-Error: ', error)
-      }
+      });
     }
     switch (event.action) {
       case 'IGNORAR_SORTEIO':
